@@ -1,5 +1,5 @@
 # Dart Programming Language Grammar
-### Version 1.0, 2013-11-14
+### Version 1.3, 2014-04-09
 
 <a name="variableDeclaration"></a>
 **variableDeclaration**: <br/>
@@ -130,7 +130,6 @@
 &emsp;&emsp;__external__? [operatorSignature](#operatorSignature) <br/>
 &emsp;&emsp;((__external__ __static__?))? [functionSignature](#functionSignature) <br/>
 &emsp;&emsp;__static__ (__final__ | __const__) [type](#type)? [staticFinalDeclarationList](#staticFinalDeclarationList) <br/>
-&emsp;&emsp;__const__ [type](#type)? [staticFinalDeclarationList](#staticFinalDeclarationList) <br/>
 &emsp;&emsp;__final__ [type](#type)? [initializedIdentifierList](#initializedIdentifierList) <br/>
 &emsp;&emsp;__static__? (__var__ | [type](#type)) [initializedIdentifierList](#initializedIdentifierList) <br/>
 
@@ -164,7 +163,7 @@
 
 <a name="getterSignature"></a>
 **getterSignature**: <br/>
-&emsp;&emsp;[type](#type)? __get__ [identifier](#identifier) <br/>
+&emsp;&emsp;[returnType](#returnType)? __get__ [identifier](#identifier) <br/>
 
 <a name="setterSignature"></a>
 **setterSignature**: <br/>
@@ -546,17 +545,25 @@
 **unaryExpression**: <br/>
 &emsp;&emsp;[prefixOperator](#prefixOperator) [unaryExpression](#unaryExpression) <br/>
 &emsp;&emsp;[postfixExpression](#postfixExpression) <br/>
-&emsp;&emsp;[prefixOperator](#prefixOperator) __super__ <br/>
+&emsp;&emsp;([minusOperator](#minusOperator) | [tildeOperator](#tildeOperator)) __super__ <br/>
 &emsp;&emsp;[incrementOperator](#incrementOperator) [assignableExpression](#assignableExpression) <br/>
 
 <a name="prefixOperator"></a>
 **prefixOperator**: <br/>
-&emsp;&emsp;`-` <br/>
-&emsp;&emsp;[unaryOperator](#unaryOperator) <br/>
+&emsp;&emsp;[minusOperator](#minusOperator) <br/>
+&emsp;&emsp;[negationOperator](#negationOperator) <br/>
+&emsp;&emsp;[tildeOperator](#tildeOperator) <br/>
 
-<a name="unaryOperator"></a>
-**unaryOperator**: <br/>
+<a name="minusOperator"></a>
+**minusOperator**: <br/>
+&emsp;&emsp;`-`; . <br/>
+
+<a name="negationOperator"></a>
+**negationOperator**: <br/>
 &emsp;&emsp;`!`  <br/>
+
+<a name="tildeOperator"></a>
+**tildeOperator**: <br/>
 &emsp;&emsp;`~` <br/>
 
 <a name="postfixExpression"></a>
@@ -605,6 +612,7 @@
 **BUILT_IN_IDENTIFIER**: <br/>
 &emsp;&emsp;__abstract__ <br/>
 &emsp;&emsp;__as__ <br/>
+&emsp;&emsp;__deferred__ <br/>
 &emsp;&emsp;__dynamic__ <br/>
 &emsp;&emsp;__export__ <br/>
 &emsp;&emsp;__external__ <br/>
@@ -785,7 +793,8 @@
 &emsp;&emsp;__external__? [getterSignature](#getterSignature) `;` <br/>
 &emsp;&emsp;__external__? [setterSignature](#setterSignature) `;` <br/>
 &emsp;&emsp;[functionSignature](#functionSignature) [functionBody](#functionBody) <br/>
-&emsp;&emsp;[returnType](#returnType)? [getOrSet](#getOrSet) [identifier](#identifier) [formalParameterList](#formalParameterList) [functionBody](#functionBody) <br/>
+&emsp;&emsp;[returnType](#returnType)? __get__ [identifier](#identifier) [functionBody](#functionBody) <br/>
+&emsp;&emsp;[returnType](#returnType)? __set__ [identifier](#identifier) [formalParameterList](#formalParameterList) [functionBody](#functionBody) <br/>
 &emsp;&emsp;(__final__ | __const__) [type](#type)? [staticFinalDeclarationList](#staticFinalDeclarationList) `;` <br/>
 &emsp;&emsp;[variableDeclaration](#variableDeclaration) `;` <br/>
 
