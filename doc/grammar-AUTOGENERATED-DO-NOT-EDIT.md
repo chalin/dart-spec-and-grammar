@@ -1,5 +1,5 @@
 # Dart Programming Language Grammar
-### Version 1.6, 2014-08-27
+### Version 1.9, 2015-03-26
 
 <a name="variableDeclaration"></a>
 **variableDeclaration**: <br/>
@@ -43,8 +43,8 @@
 
 <a name="functionBody"></a>
 **functionBody**: <br/>
-&emsp;&emsp;`=>` [expression](#expression) `;` <br/>
-&emsp;&emsp;[block](#block) <br/>
+&emsp;&emsp;__async__? `=>` [expression](#expression) `;` <br/>
+&emsp;&emsp;(__async__ | __async__* | __sync__* )? [block](#block) <br/>
 
 <a name="block"></a>
 **block**: <br/>
@@ -218,6 +218,10 @@
 <a name="mixinApplication"></a>
 **mixinApplication**: <br/>
 &emsp;&emsp;[type](#type) [mixins](#mixins) [interfaces](#interfaces)? <br/>
+
+<a name="enumType"></a>
+**enumType**: <br/>
+&emsp;&emsp;[metadata](#metadata) __enum__ [id](#id) `{` [id](#id) [`,` [id](#id)]* [`,`] `}` <br/>
 
 <a name="typeParameter"></a>
 **typeParameter**: <br/>
@@ -394,12 +398,7 @@
 
 <a name="functionExpression"></a>
 **functionExpression**: <br/>
-&emsp;&emsp;[formalParameterList](#formalParameterList) [functionExpressionBody](#functionExpressionBody) <br/>
-
-<a name="functionExpressionBody"></a>
-**functionExpressionBody**: <br/>
-&emsp;&emsp;`=>` [expression](#expression) <br/>
-&emsp;&emsp;[block](#block) <br/>
+&emsp;&emsp;[formalParameterList](#formalParameterList) [functionBody](#functionBody) <br/>
 
 <a name="thisExpression"></a>
 **thisExpression**: <br/>
@@ -544,6 +543,7 @@
 <a name="unaryExpression"></a>
 **unaryExpression**: <br/>
 &emsp;&emsp;[prefixOperator](#prefixOperator) [unaryExpression](#unaryExpression) <br/>
+&emsp;&emsp;[awaitExpression](#awaitExpression) <br/>
 &emsp;&emsp;[postfixExpression](#postfixExpression) <br/>
 &emsp;&emsp;([minusOperator](#minusOperator) | [tildeOperator](#tildeOperator)) __super__ <br/>
 &emsp;&emsp;[incrementOperator](#incrementOperator) [assignableExpression](#assignableExpression) <br/>
@@ -566,6 +566,10 @@
 **tildeOperator**: <br/>
 &emsp;&emsp;`~` <br/>
 
+<a name="awaitExpression"></a>
+**awaitExpression**: <br/>
+&emsp;&emsp;__await__ [unaryExpression](#unaryExpression) <br/>
+
 <a name="postfixExpression"></a>
 **postfixExpression**: <br/>
 &emsp;&emsp;[assignableExpression](#assignableExpression) [postfixOperator](#postfixOperator) <br/>
@@ -587,7 +591,7 @@
 
 <a name="assignableExpression"></a>
 **assignableExpression**: <br/>
-&emsp;&emsp;[primary](#primary) ([argument](#argument)* [assignableSelector](#assignableSelector))+ <br/>
+&emsp;&emsp;[primary](#primary) ([arguments](#arguments)* [assignableSelector](#assignableSelector))+ <br/>
 &emsp;&emsp;__super__ [assignableSelector](#assignableSelector) <br/>
 &emsp;&emsp;[identifier](#identifier) <br/>
 
@@ -689,6 +693,8 @@
 &emsp;&emsp;[breakStatement](#breakStatement) <br/>
 &emsp;&emsp;[continueStatement](#continueStatement) <br/>
 &emsp;&emsp;[returnStatement](#returnStatement) <br/>
+&emsp;&emsp;[yieldStatement](#yieldStatement) <br/>
+&emsp;&emsp;[yieldEachStatement](#yieldEachStatement) <br/>
 &emsp;&emsp;[expressionStatement](#expressionStatement) <br/>
 &emsp;&emsp;[assertStatement](#assertStatement) <br/>
 &emsp;&emsp;[localFunctionDeclaration](#localFunctionDeclaration) <br/>
@@ -711,7 +717,7 @@
 
 <a name="forStatement"></a>
 **forStatement**: <br/>
-&emsp;&emsp;__for__ `(` [forLoopParts](#forLoopParts) `)` [statement](#statement) <br/>
+&emsp;&emsp;__await__? __for__ `(` [forLoopParts](#forLoopParts) `)` [statement](#statement) <br/>
 
 <a name="forLoopParts"></a>
 **forLoopParts**: <br/>
@@ -721,7 +727,7 @@
 
 <a name="forInitializerStatement"></a>
 **forInitializerStatement**: <br/>
-&emsp;&emsp;[localVariableDeclaration](#localVariableDeclaration) `;` <br/>
+&emsp;&emsp;[localVariableDeclaration](#localVariableDeclaration) <br/>
 &emsp;&emsp;[expression](#expression)? `;` <br/>
 
 <a name="whileStatement"></a>
@@ -746,7 +752,7 @@
 
 <a name="rethrowStatement"></a>
 **rethrowStatement**: <br/>
-&emsp;&emsp;__rethrow__ <br/>
+&emsp;&emsp;__rethrow__ `;` <br/>
 
 <a name="tryStatement"></a>
 **tryStatement**: <br/>
@@ -781,6 +787,14 @@
 **continueStatement**: <br/>
 &emsp;&emsp;__continue__ [identifier](#identifier)? `;` <br/>
 
+<a name="yieldStatement"></a>
+**yieldStatement**: <br/>
+&emsp;&emsp;__yield__ [expression](#expression) `;` <br/>
+
+<a name="yieldEachStatement"></a>
+**yieldEachStatement**: <br/>
+&emsp;&emsp;__yield__* [expression](#expression) `;` <br/>
+
 <a name="assertStatement"></a>
 **assertStatement**: <br/>
 &emsp;&emsp;[assert](#assert) `(` [conditionalExpression](#conditionalExpression) `)` `;` <br/>
@@ -788,6 +802,7 @@
 <a name="topLevelDefinition"></a>
 **topLevelDefinition**: <br/>
 &emsp;&emsp;[classDefinition](#classDefinition) <br/>
+&emsp;&emsp;[enumType](#enumType) <br/>
 &emsp;&emsp;[typeAlias](#typeAlias) <br/>
 &emsp;&emsp;__external__? [functionSignature](#functionSignature) `;` <br/>
 &emsp;&emsp;__external__? [getterSignature](#getterSignature) `;` <br/>

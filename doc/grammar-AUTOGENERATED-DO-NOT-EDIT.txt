@@ -1,5 +1,5 @@
 Dart Programming Language Grammar
-Version 1.6, 2014-08-27
+Version 1.9, 2015-03-26
 
 variableDeclaration:
     declaredIdentifier (`,` identifier)*
@@ -33,8 +33,8 @@ returnType:
     type
 
 functionBody:
-    `=>` expression `;`
-    block
+    `async`? `=>` expression `;`
+    (`async` | `async`* | `sync`*)? block
 
 block:
     `{` statements `}`
@@ -173,6 +173,9 @@ mixinApplicationClass:
 
 mixinApplication:
     type mixins interfaces? 
+
+enumType:
+    metadata `enum` id `{` id [`,` id]* [`,`] `}`
 
 typeParameter:
     metadata identifier (`extends` type)?
@@ -316,11 +319,7 @@ throwExpressionWithoutCascade:
     `throw` expressionWithoutCascade 
 
 functionExpression:
-    formalParameterList functionExpressionBody
-
-functionExpressionBody:
-    `=>` expression
-    block
+    formalParameterList functionBody
 
 thisExpression:
     `this`
@@ -437,6 +436,7 @@ multiplicativeOperator:
 
 unaryExpression:
     prefixOperator unaryExpression
+    awaitExpression
     postfixExpression
     (minusOperator | tildeOperator) `super`
     incrementOperator assignableExpression
@@ -455,6 +455,9 @@ negationOperator:
 tildeOperator:
     `~`
 
+awaitExpression:
+    `await` unaryExpression
+
 postfixExpression:
     assignableExpression postfixOperator
     primary selector*
@@ -471,7 +474,7 @@ incrementOperator:
     `--`
 
 assignableExpression:
-    primary (argument* assignableSelector)+
+    primary (arguments* assignableSelector)+
     `super` assignableSelector
     identifier
 
@@ -556,6 +559,8 @@ nonLabelledStatement:
     breakStatement
     continueStatement
     returnStatement
+    yieldStatement
+    yieldEachStatement
     expressionStatement
     assertStatement
     localFunctionDeclaration
@@ -573,7 +578,7 @@ ifStatement:
     `if` `(` expression `)` statement ( `else` statement)? 
 
 forStatement:
-    `for` `(` forLoopParts `)` statement
+    `await`? `for` `(` forLoopParts `)` statement
 
 forLoopParts:
     forInitializerStatement expression? `;` expressionList?
@@ -581,7 +586,7 @@ forLoopParts:
     identifier `in` expression
 
 forInitializerStatement:
-    localVariableDeclaration `;`
+    localVariableDeclaration
     expression? `;`
 
 whileStatement:
@@ -600,7 +605,7 @@ defaultCase:
     label* `default` `:` statements
 
 rethrowStatement:
-    `rethrow`
+    `rethrow` `;`
 
 tryStatement:
     `try` block (onPart+ finallyPart? | finallyPart)
@@ -627,11 +632,18 @@ breakStatement:
 continueStatement:
     `continue` identifier? `;`
 
+yieldStatement:
+    `yield` expression `;`
+
+yieldEachStatement:
+    `yield`* expression `;`
+
 assertStatement:
     assert `(` conditionalExpression `)` `;`
 
 topLevelDefinition:
     classDefinition
+    enumType
     typeAlias
     `external`? functionSignature `;`
     `external`? getterSignature `;`
