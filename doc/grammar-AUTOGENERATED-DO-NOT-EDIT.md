@@ -1,5 +1,5 @@
 # Dart Programming Language Grammar
-### Version 1.3, 2014-04-09
+### Version 1.6, 2014-08-27
 
 <a name="variableDeclaration"></a>
 **variableDeclaration**: <br/>
@@ -822,7 +822,12 @@
 
 <a name="libraryImport"></a>
 **libraryImport**: <br/>
-&emsp;&emsp;[metadata](#metadata) __import__ [uri](#uri) (__as__ [identifier](#identifier))? [combinator](#combinator)* `;` <br/>
+&emsp;&emsp;[metadata](#metadata) [importSpecification](#importSpecification) <br/>
+
+<a name="importSpecification"></a>
+**importSpecification**: <br/>
+&emsp;&emsp;__import__ [uri](#uri) (__as__ [identifier](#identifier))? [combinator](#combinator)* `;` <br/>
+&emsp;&emsp;__import__ [uri](#uri) __deferred__ __as__ [identifier](#identifier) [combinator](#combinator)* `;` <br/>
 
 <a name="combinator"></a>
 **combinator**: <br/>
