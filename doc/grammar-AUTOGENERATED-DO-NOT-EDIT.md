@@ -1,5 +1,5 @@
 # Dart Programming Language Grammar
-### Version 1.9, 2015-03-26
+### Version GIT-HEAD, 2015-06-03
 
 <a name="variableDeclaration"></a>
 **variableDeclaration**: <br/>
@@ -259,6 +259,7 @@
 &emsp;&emsp;[literal](#literal) <br/>
 &emsp;&emsp;[identifier](#identifier) <br/>
 &emsp;&emsp;[newExpression](#newExpression) <br/>
+&emsp;&emsp;__new__ [type](#type) `#` (`.` [identifier](#identifier))? <br/>
 &emsp;&emsp;[constObjectExpression](#constObjectExpression) <br/>
 &emsp;&emsp;`(` [expression](#expression) `)` <br/>
 
@@ -452,10 +453,15 @@
 &emsp;&emsp;`&=` <br/>
 &emsp;&emsp;`^=` <br/>
 &emsp;&emsp;`|=` <br/>
+&emsp;&emsp;`??=` <br/>
 
 <a name="conditionalExpression"></a>
 **conditionalExpression**: <br/>
-&emsp;&emsp;[logicalOrExpression](#logicalOrExpression) (`?` [expressionWithoutCascade](#expressionWithoutCascade) `:` [expressionWithoutCascade](#expressionWithoutCascade))? <br/>
+&emsp;&emsp;[ifNullExpression](#ifNullExpression) (`?` [expressionWithoutCascade](#expressionWithoutCascade) `:` [expressionWithoutCascade](#expressionWithoutCascade))? <br/>
+
+<a name="ifNullExpression"></a>
+**ifNullExpression**: <br/>
+&emsp;&emsp;[logicalOrExpression](#logicalOrExpression) (`??` [logicalOrExpression](#logicalOrExpression))* <br/>
 
 <a name="logicalOrExpression"></a>
 **logicalOrExpression**: <br/>
@@ -573,7 +579,7 @@
 <a name="postfixExpression"></a>
 **postfixExpression**: <br/>
 &emsp;&emsp;[assignableExpression](#assignableExpression) [postfixOperator](#postfixOperator) <br/>
-&emsp;&emsp;[primary](#primary) [selector](#selector)* <br/>
+&emsp;&emsp;[primary](#primary) ([selector](#selector)* | ( `#` ( ([identifier](#identifier) `=`?) | [operator](#operator)))) <br/>
 
 <a name="postfixOperator"></a>
 **postfixOperator**: <br/>
@@ -592,13 +598,18 @@
 <a name="assignableExpression"></a>
 **assignableExpression**: <br/>
 &emsp;&emsp;[primary](#primary) ([arguments](#arguments)* [assignableSelector](#assignableSelector))+ <br/>
-&emsp;&emsp;__super__ [assignableSelector](#assignableSelector) <br/>
+&emsp;&emsp;__super__ [unconditionalAssignableSelector](#unconditionalAssignableSelector) <br/>
 &emsp;&emsp;[identifier](#identifier) <br/>
+
+<a name="unconditionalAssignableSelector"></a>
+**unconditionalAssignableSelector**: <br/>
+&emsp;&emsp;`[` [expression](#expression) `]` <br/>
+&emsp;&emsp;`.` [identifier](#identifier) <br/>
 
 <a name="assignableSelector"></a>
 **assignableSelector**: <br/>
-&emsp;&emsp;`[` [expression](#expression) `]` <br/>
-&emsp;&emsp;`.` [identifier](#identifier) <br/>
+&emsp;&emsp;[unconditionalAssignableSelector](#unconditionalAssignableSelector) <br/>
+&emsp;&emsp;`?.` [identifier](#identifier) <br/>
 
 <a name="identifier"></a>
 **identifier**: <br/>

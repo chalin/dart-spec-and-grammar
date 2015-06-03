@@ -1,5 +1,5 @@
 Dart Programming Language Grammar
-Version 1.9, 2015-03-26
+Version GIT-HEAD, 2015-06-03
 
 variableDeclaration:
     declaredIdentifier (`,` identifier)*
@@ -206,6 +206,7 @@ primary:
     literal
     identifier
     newExpression
+    `new` type `#` (`.` identifier)?
     constObjectExpression
     `(` expression `)`
 
@@ -363,9 +364,13 @@ compoundAssignmentOperator:
     `&=`
     `^=`
     `|=`
+    `??=`
 
 conditionalExpression:
-    logicalOrExpression (`?` expressionWithoutCascade `:` expressionWithoutCascade)? 
+    ifNullExpression (`?` expressionWithoutCascade `:` expressionWithoutCascade)? 
+
+ifNullExpression:
+    logicalOrExpression (`??` logicalOrExpression)*
 
 logicalOrExpression:
     logicalAndExpression (`||` logicalAndExpression)*
@@ -460,7 +465,7 @@ awaitExpression:
 
 postfixExpression:
     assignableExpression postfixOperator
-    primary selector*
+    primary (selector* | ( `#` ( (identifier `=`?) | operator)))
 
 postfixOperator:
     incrementOperator
@@ -475,12 +480,16 @@ incrementOperator:
 
 assignableExpression:
     primary (arguments* assignableSelector)+
-    `super` assignableSelector
+    `super` unconditionalAssignableSelector
     identifier
 
-assignableSelector:
+unconditionalAssignableSelector:
     `[` expression `]`
     `.` identifier
+
+assignableSelector:
+    unconditionalAssignableSelector
+    `?.` identifier
 
 identifier:
     IDENTIFIER
