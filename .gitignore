@@ -1,0 +1,7 @@
+*-tmp*.*
+*.aux
+*.log
+*.out
+*.toc
+DLS/current/*.pdf
+grammar/*.pdf
