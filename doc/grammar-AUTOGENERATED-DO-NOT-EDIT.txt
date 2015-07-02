@@ -1,5 +1,5 @@
 Dart Programming Language Grammar
-Version GIT-HEAD, 2015-06-03
+Version GIT-HEAD, 2015-07-02
 
 variableDeclaration:
     declaredIdentifier (`,` identifier)*
@@ -201,7 +201,7 @@ expressionList:
 
 primary:
     thisExpression
-    `super` assignableSelector
+    `super` unconditionalAssignableSelector
     functionExpression
     literal
     identifier
@@ -608,7 +608,7 @@ switchStatement:
     `switch` `(` expression `)` `{` switchCase* defaultCase? `}`
 
 switchCase:
-    label* (`case` expression `:`) statements
+    label* `case` expression `:` statements
 
 defaultCase:
     label* `default` `:` statements

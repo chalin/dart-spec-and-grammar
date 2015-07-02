@@ -1,5 +1,5 @@
 # Dart Programming Language Grammar
-### Version GIT-HEAD, 2015-06-03
+### Version GIT-HEAD, 2015-07-02
 
 <a name="variableDeclaration"></a>
 **variableDeclaration**: <br/>
@@ -254,7 +254,7 @@
 <a name="primary"></a>
 **primary**: <br/>
 &emsp;&emsp;[thisExpression](#thisExpression) <br/>
-&emsp;&emsp;__super__ [assignableSelector](#assignableSelector) <br/>
+&emsp;&emsp;__super__ [unconditionalAssignableSelector](#unconditionalAssignableSelector) <br/>
 &emsp;&emsp;[functionExpression](#functionExpression) <br/>
 &emsp;&emsp;[literal](#literal) <br/>
 &emsp;&emsp;[identifier](#identifier) <br/>
@@ -755,7 +755,7 @@
 
 <a name="switchCase"></a>
 **switchCase**: <br/>
-&emsp;&emsp;[label](#label)* (__case__ [expression](#expression) `:`) [statements](#statements) <br/>
+&emsp;&emsp;[label](#label)* __case__ [expression](#expression) `:` [statements](#statements) <br/>
 
 <a name="defaultCase"></a>
 **defaultCase**: <br/>
