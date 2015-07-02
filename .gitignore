@@ -3,5 +3,8 @@
 *.log
 *.out
 *.toc
+*-hash.tex
+*-hash.pdf
+*-list.txt
 DLS/current/*.pdf
 grammar/*.pdf

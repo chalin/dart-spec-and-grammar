@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Get earlier releases from googlecode.
+# Get latest language spec and associated scripts.
 
 cd DLS/current
 
