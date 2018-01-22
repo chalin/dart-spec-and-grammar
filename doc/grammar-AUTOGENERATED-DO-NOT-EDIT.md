@@ -1,5 +1,5 @@
 # Dart Programming Language Grammar
-### Version 1.15, 2017-06-23
+### Version GIT-HEAD, 2018-01-21
 
 <a name="variableDeclaration"></a>
 **variableDeclaration**: <br/>
@@ -34,7 +34,11 @@
 
 <a name="functionSignature"></a>
 **functionSignature**: <br/>
-&emsp;&emsp;[metadata](#metadata) [returnType](#returnType)? [identifier](#identifier) [formalParameterList](#formalParameterList) <br/>
+&emsp;&emsp;[metadata](#metadata) [returnType](#returnType)? [identifier](#identifier) [formalParameterPart](#formalParameterPart) <br/>
+
+<a name="formalParameterPart"></a>
+**formalParameterPart**: <br/>
+&emsp;&emsp;[typeParameters](#typeParameters)? [formalParameterList](#formalParameterList) <br/>
 
 <a name="returnType"></a>
 **returnType**: <br/>
@@ -82,7 +86,7 @@
 
 <a name="functionFormalParameter"></a>
 **functionFormalParameter**: <br/>
-&emsp;&emsp;[metadata](#metadata) __covariant__? [returnType](#returnType)? [identifier](#identifier) [formalParameterList](#formalParameterList) <br/>
+&emsp;&emsp;[metadata](#metadata) __covariant__? [returnType](#returnType)? [identifier](#identifier) [formalParameterPart](#formalParameterPart) <br/>
 
 <a name="simpleFormalParameter"></a>
 **simpleFormalParameter**: <br/>
@@ -90,7 +94,7 @@
 
 <a name="fieldFormalParameter"></a>
 **fieldFormalParameter**: <br/>
-&emsp;&emsp;[metadata](#metadata) [finalConstVarOrType](#finalConstVarOrType)? __this__ `.` [identifier](#identifier) [formalParameterList](#formalParameterList)? <br/>
+&emsp;&emsp;[metadata](#metadata) [finalConstVarOrType](#finalConstVarOrType)? __this__ `.` [identifier](#identifier) [formalParameterPart](#formalParameterPart)? <br/>
 
 <a name="defaultFormalParameter"></a>
 **defaultFormalParameter**: <br/>
@@ -154,8 +158,8 @@
 **operator**: <br/>
 &emsp;&emsp;`~` <br/>
 &emsp;&emsp;[binaryOperator](#binaryOperator) <br/>
-&emsp;&emsp;`[` `]`  <br/>
-&emsp;&emsp;`[` `]` `=` <br/>
+&emsp;&emsp;`[]`  <br/>
+&emsp;&emsp;`[]=` <br/>
 
 <a name="binaryOperator"></a>
 **binaryOperator**: <br/>
@@ -184,13 +188,14 @@
 
 <a name="initializers"></a>
 **initializers**: <br/>
-&emsp;&emsp;`:` [superCallOrFieldInitializer](#superCallOrFieldInitializer) (`,` [superCallOrFieldInitializer](#superCallOrFieldInitializer))* <br/>
+&emsp;&emsp;`:` [initializerListEntry](#initializerListEntry) (`,` [initializerListEntry](#initializerListEntry))* <br/>
 
-<a name="superCallOrFieldInitializer"></a>
-**superCallOrFieldInitializer**: <br/>
+<a name="initializerListEntry"></a>
+**initializerListEntry**: <br/>
 &emsp;&emsp;__super__ [arguments](#arguments) <br/>
 &emsp;&emsp;__super__ `.` [identifier](#identifier) [arguments](#arguments) <br/>
 &emsp;&emsp;[fieldInitializer](#fieldInitializer) <br/>
+&emsp;&emsp;[assertion](#assertion) <br/>
 
 <a name="fieldInitializer"></a>
 **fieldInitializer**: <br/>
@@ -218,7 +223,7 @@
 
 <a name="mixinApplicationClass"></a>
 **mixinApplicationClass**: <br/>
-&emsp;&emsp;[identifier](#identifier) [typeParameters](#typeParameters)? `=` [mixinApplication](#mixinApplication) `;` . <br/>
+&emsp;&emsp;[identifier](#identifier) [typeParameters](#typeParameters)? `=` [mixinApplication](#mixinApplication) `;` <br/>
 
 <a name="mixinApplication"></a>
 **mixinApplication**: <br/>
@@ -319,15 +324,15 @@
 **singleLineString**: <br/>
 &emsp;&emsp;`"` [stringContentDQ](#stringContentDQ)* `"` <br/>
 &emsp;&emsp;`'` [stringContentSQ](#stringContentSQ)* `'` <br/>
-&emsp;&emsp;`r` `'` (~( `'` | [NEWLINE](#NEWLINE) ))* `'` <br/>
-&emsp;&emsp;`r` `"` (~( `"` | [NEWLINE](#NEWLINE) ))* `"` <br/>
+&emsp;&emsp;`r'` (~( `'` | [NEWLINE](#NEWLINE) ))* `'` <br/>
+&emsp;&emsp;`r"` (~( `"` | [NEWLINE](#NEWLINE) ))* `"` <br/>
 
 <a name="multilineString"></a>
 **multilineString**: <br/>
 &emsp;&emsp;`"""` [stringContentTDQ](#stringContentTDQ)* `"""` <br/>
 &emsp;&emsp;`'''` [stringContentTSQ](#stringContentTSQ)* `'''` <br/>
-&emsp;&emsp;`r` `"""` (~ `"""`)* `"""` <br/>
-&emsp;&emsp;`r` `'''` (~ `'''`)* `'''` <br/>
+&emsp;&emsp;`r"""` (~ `"""`)* `"""` <br/>
+&emsp;&emsp;`r'''` (~ `'''`)* `'''` <br/>
 
 <a name="ESCAPE_SEQUENCE"></a>
 **ESCAPE_SEQUENCE**: <br/>
@@ -371,16 +376,16 @@
 **NEWLINE**: <br/>
 &emsp;&emsp;\n <br/>
 &emsp;&emsp;\r <br/>
-&emsp;&emsp;\r \n <br/>
+&emsp;&emsp;\r\n <br/>
 
 <a name="stringInterpolation"></a>
 **stringInterpolation**: <br/>
 &emsp;&emsp;`$` [IDENTIFIER_NO_DOLLAR](#IDENTIFIER_NO_DOLLAR) <br/>
-&emsp;&emsp;`$` `{` [expression](#expression) `}` <br/>
+&emsp;&emsp;`${` [expression](#expression) `}` <br/>
 
 <a name="symbolLiteral"></a>
 **symbolLiteral**: <br/>
-&emsp;&emsp;`#` ([operator](#operator) | ([identifier](#identifier) (`.` [identifier](#identifier))* )) . <br/>
+&emsp;&emsp;`#` ([operator](#operator) | ([identifier](#identifier) (`.` [identifier](#identifier))* )) <br/>
 
 <a name="listLiteral"></a>
 **listLiteral**: <br/>
@@ -404,7 +409,7 @@
 
 <a name="functionExpression"></a>
 **functionExpression**: <br/>
-&emsp;&emsp;[formalParameterList](#formalParameterList) [functionBody](#functionBody) <br/>
+&emsp;&emsp;[formalParameterPart](#formalParameterPart) [functionBody](#functionBody) <br/>
 
 <a name="thisExpression"></a>
 **thisExpression**: <br/>
@@ -433,12 +438,16 @@
 
 <a name="cascadeSection"></a>
 **cascadeSection**: <br/>
-&emsp;&emsp;`..` ([cascadeSelector](#cascadeSelector) [arguments](#arguments)* ) ([assignableSelector](#assignableSelector) [arguments](#arguments)* )* ([assignmentOperator](#assignmentOperator) [expressionWithoutCascade](#expressionWithoutCascade))? <br/>
+&emsp;&emsp;`..` ([cascadeSelector](#cascadeSelector) [argumentPart](#argumentPart)* ) ([assignableSelector](#assignableSelector) [argumentPart](#argumentPart)* )* ([assignmentOperator](#assignmentOperator) [expressionWithoutCascade](#expressionWithoutCascade))? <br/>
 
 <a name="cascadeSelector"></a>
 **cascadeSelector**: <br/>
 &emsp;&emsp;`[` [expression](#expression) `]` <br/>
 &emsp;&emsp;[identifier](#identifier) <br/>
+
+<a name="argumentPart"></a>
+**argumentPart**: <br/>
+&emsp;&emsp;[typeArguments](#typeArguments)? [arguments](#arguments) <br/>
 
 <a name="assignmentOperator"></a>
 **assignmentOperator**: <br/>
@@ -453,8 +462,9 @@
 &emsp;&emsp;`\%=` <br/>
 &emsp;&emsp;`+=` <br/>
 &emsp;&emsp;`-=` <br/>
-&emsp;&emsp;`< <=` <br/>
-&emsp;&emsp;`> >=` <br/>
+&emsp;&emsp;`<<=` <br/>
+&emsp;&emsp;`>>=` <br/>
+&emsp;&emsp;`>>>=` <br/>
 &emsp;&emsp;`&=` <br/>
 &emsp;&emsp;`^=` <br/>
 &emsp;&emsp;`|=` <br/>
@@ -527,7 +537,8 @@
 <a name="shiftOperator"></a>
 **shiftOperator**: <br/>
 &emsp;&emsp;`<<` <br/>
-&emsp;&emsp;`> >` <br/>
+&emsp;&emsp;`>>` <br/>
+&emsp;&emsp;`>>>` <br/>
 
 <a name="additiveExpression"></a>
 **additiveExpression**: <br/>
@@ -567,11 +578,11 @@
 
 <a name="minusOperator"></a>
 **minusOperator**: <br/>
-&emsp;&emsp;`-`; . <br/>
+&emsp;&emsp;`-` <br/>
 
 <a name="negationOperator"></a>
 **negationOperator**: <br/>
-&emsp;&emsp;`!`  <br/>
+&emsp;&emsp;`!` <br/>
 
 <a name="tildeOperator"></a>
 **tildeOperator**: <br/>
@@ -593,7 +604,7 @@
 <a name="selector"></a>
 **selector**: <br/>
 &emsp;&emsp;[assignableSelector](#assignableSelector) <br/>
-&emsp;&emsp;[arguments](#arguments) <br/>
+&emsp;&emsp;[argumentPart](#argumentPart) <br/>
 
 <a name="incrementOperator"></a>
 **incrementOperator**: <br/>
@@ -602,7 +613,7 @@
 
 <a name="assignableExpression"></a>
 **assignableExpression**: <br/>
-&emsp;&emsp;[primary](#primary) ([arguments](#arguments)* [assignableSelector](#assignableSelector))+ <br/>
+&emsp;&emsp;[primary](#primary) ([argumentPart](#argumentPart)* [assignableSelector](#assignableSelector))+ <br/>
 &emsp;&emsp;__super__ [unconditionalAssignableSelector](#unconditionalAssignableSelector) <br/>
 &emsp;&emsp;[identifier](#identifier) <br/>
 
@@ -814,7 +825,11 @@
 
 <a name="assertStatement"></a>
 **assertStatement**: <br/>
-&emsp;&emsp;[assert](#assert) `(` [expression](#expression) ( `,` [expression](#expression) )? `,`? `)` `;` <br/>
+&emsp;&emsp;[assertion](#assertion) `;` <br/>
+
+<a name="assertion"></a>
+**assertion**: <br/>
+&emsp;&emsp;__assert__ `(` [expression](#expression) (`,` [expression](#expression) )? `,`? `)` <br/>
 
 <a name="topLevelDefinition"></a>
 **topLevelDefinition**: <br/>
@@ -849,7 +864,7 @@
 
 <a name="importOrExport"></a>
 **importOrExport**: <br/>
-&emsp;&emsp;[libraryImport](#libraryImport)  <br/>
+&emsp;&emsp;[libraryImport](#libraryImport) <br/>
 &emsp;&emsp;[libraryExport](#libraryExport) <br/>
 
 <a name="libraryImport"></a>
@@ -934,6 +949,9 @@
 <a name="WHITESPACE"></a>
 **WHITESPACE**: <br/>
 &emsp;&emsp;(`\t` | ` ` | [NEWLINE](#NEWLINE))+ <br/>
+
+<a name="SINGLE_LINE_COMMENT"></a>
+**SINGLE_LINE_COMMENT**: <br/>
 &emsp;&emsp;`//` ~([NEWLINE](#NEWLINE))* ([NEWLINE](#NEWLINE))? <br/>
 
 <a name="MULTI_LINE_COMMENT"></a>

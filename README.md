@@ -19,6 +19,7 @@ The [latest language specification sources][dart-lang/sdk/docs/language] are mir
 - [1.9](DLS/1.9), corresponds to [ECMA-408 3rd Edition][] (June 2015)
 - [1.11](DLS/1.11), corresponds to [ECMA-408 4th Edition][ECMA-408] (Dec 2015, the latest edition)
 - [1.15](DLS/1.15), unpublished (June 2017)
+- [Current](DLS/current), Dart 2 dev (as of Jan 21, 2018)
 
 [ECMA-408 1st Edition]: http://www.ecma-international.org/publications/files/ECMA-ST-ARCH/ECMA-408%201st%20edition%20June%202014.pdf
 [ECMA-408 2nd Edition]:

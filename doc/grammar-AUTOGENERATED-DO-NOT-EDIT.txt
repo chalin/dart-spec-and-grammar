@@ -1,5 +1,5 @@
 Dart Programming Language Grammar
-Version 1.15, 2017-06-23
+Version GIT-HEAD, 2018-01-21
 
 variableDeclaration:
     declaredIdentifier (`,` identifier)*
@@ -17,16 +17,19 @@ varOrType:
     type
 
 initializedVariableDeclaration:
-    declaredIdentifier (`=` expression)? (`,` initializedIdentifier)* 
+    declaredIdentifier (`=` expression)? (`,` initializedIdentifier)*
 
 initializedIdentifier:
-    identifier (`=` expression)? 
+    identifier (`=` expression)?
 
 initializedIdentifierList:
     initializedIdentifier (`,` initializedIdentifier)*
 
 functionSignature:
-    metadata returnType? identifier formalParameterList
+    metadata returnType? identifier formalParameterPart
+
+formalParameterPart:
+    typeParameters? formalParameterList
 
 returnType:
     `void`
@@ -64,13 +67,13 @@ normalFormalParameter:
     simpleFormalParameter
 
 functionFormalParameter:
-    metadata `covariant`? returnType? identifier formalParameterList
+    metadata `covariant`? returnType? identifier formalParameterPart
 
 simpleFormalParameter:
     metadata `covariant`? finalConstVarOrType? identifier
 
 fieldFormalParameter:
-    metadata finalConstVarOrType? `this` `.` identifier formalParameterList?
+    metadata finalConstVarOrType? `this` `.` identifier formalParameterPart?
 
 defaultFormalParameter:
     normalFormalParameter (`=` expression)?
@@ -123,8 +126,8 @@ operatorSignature:
 operator:
     `~`
     binaryOperator
-    `[` `]` 
-    `[` `]` `=`
+    `[]` 
+    `[]=`
 
 binaryOperator:
     multiplicativeOperator
@@ -147,12 +150,13 @@ redirection:
     `:` `this` (`.` identifier)? arguments
 
 initializers:
-    `:` superCallOrFieldInitializer (`,` superCallOrFieldInitializer)*
+    `:` initializerListEntry (`,` initializerListEntry)*
 
-superCallOrFieldInitializer:
+initializerListEntry:
     `super` arguments
     `super` `.` identifier arguments
     fieldInitializer
+    assertion
 
 fieldInitializer:
     (`this` `.`)? identifier `=` conditionalExpression cascadeSection*
@@ -173,7 +177,7 @@ interfaces:
     `implements` typeList
 
 mixinApplicationClass:
-    identifier typeParameters? `=` mixinApplication `;` .
+    identifier typeParameters? `=` mixinApplication `;`
 
 mixinApplication:
     type mixins interfaces?
@@ -201,7 +205,7 @@ expressionWithoutCascade:
     throwExpressionWithoutCascade
 
 expressionList:
-    expression (`,` expression)* 
+    expression (`,` expression)*
 
 primary:
     thisExpression
@@ -255,14 +259,14 @@ stringLiteral:
 singleLineString:
     `"` stringContentDQ* `"`
     `'` stringContentSQ* `'`
-    `r` `'` (~( `'` | NEWLINE ))* `'`
-    `r` `"` (~( `"` | NEWLINE ))* `"`
+    `r'` (~( `'` | NEWLINE ))* `'`
+    `r"` (~( `"` | NEWLINE ))* `"`
 
 multilineString:
     `"""` stringContentTDQ* `"""`
     `'''` stringContentTSQ* `'''`
-    `r` `"""` (~ `"""`)* `"""`
-    `r` `'''` (~ `'''`)* `'''`
+    `r"""` (~ `"""`)* `"""`
+    `r'''` (~ `'''`)* `'''`
 
 ESCAPE_SEQUENCE:
     `\n`
@@ -299,14 +303,14 @@ stringContentTSQ:
 NEWLINE:
     \n
     \r
-    \r \n
+    \r\n
 
 stringInterpolation:
     `$` IDENTIFIER_NO_DOLLAR
-    `$` `{` expression `}` 
+    `${` expression `}`
 
 symbolLiteral:
-    `#` (operator | (identifier (`.` identifier)*)) .
+    `#` (operator | (identifier (`.` identifier)*))
 
 listLiteral:
     `const`? typeArguments? `[` (expressionList `,`?)? `]`
@@ -324,7 +328,7 @@ throwExpressionWithoutCascade:
     `throw` expressionWithoutCascade
 
 functionExpression:
-    formalParameterList functionBody
+    formalParameterPart functionBody
 
 thisExpression:
     `this`
@@ -343,14 +347,17 @@ argumentList:
     expressionList (`,` namedArgument)*
 
 namedArgument:
-    label expression 
+    label expression
 
 cascadeSection:
-    `..` (cascadeSelector arguments*) (assignableSelector arguments*)* (assignmentOperator expressionWithoutCascade)?
+    `..` (cascadeSelector argumentPart*) (assignableSelector argumentPart*)* (assignmentOperator expressionWithoutCascade)?
 
 cascadeSelector:
     `[` expression `]`
     identifier
+
+argumentPart:
+    typeArguments? arguments
 
 assignmentOperator:
     `=` 
@@ -363,15 +370,16 @@ compoundAssignmentOperator:
     `\%=`
     `+=`
     `-=`
-    `< <=`
-    `> >=`
+    `<<=`
+    `>>=`
+    `>>>=`
     `&=`
     `^=`
     `|=`
     `??=`
 
 conditionalExpression:
-    ifNullExpression (`?` expressionWithoutCascade `:` expressionWithoutCascade)? 
+    ifNullExpression (`?` expressionWithoutCascade `:` expressionWithoutCascade)?
 
 ifNullExpression:
     logicalOrExpression (`??` logicalOrExpression)*
@@ -423,7 +431,8 @@ shiftExpression:
 
 shiftOperator:
     `<<`
-    `> >`
+    `>>`
+    `>>>`
 
 additiveExpression:
     multiplicativeExpression (additiveOperator multiplicativeExpression)*
@@ -456,10 +465,10 @@ prefixOperator:
     tildeOperator
 
 minusOperator:
-    `-`; .
+    `-`
 
 negationOperator:
-    `!` 
+    `!`
 
 tildeOperator:
     `~`
@@ -476,14 +485,14 @@ postfixOperator:
 
 selector:
     assignableSelector
-    arguments
+    argumentPart
 
 incrementOperator:
     `++`
     `--`
 
 assignableExpression:
-    primary (arguments* assignableSelector)+
+    primary (argumentPart* assignableSelector)+
     `super` unconditionalAssignableSelector
     identifier
 
@@ -604,7 +613,7 @@ forInitializerStatement:
     expression? `;`
 
 whileStatement:
-    `while` `(` expression `)` statement 
+    `while` `(` expression `)` statement
 
 doStatement:
     `do` statement `while` `(` expression `)` `;`
@@ -635,7 +644,7 @@ finallyPart:
     `finally` block
 
 returnStatement:
-    `return` expression? `;` 
+    `return` expression? `;`
 
 label:
     identifier `:`
@@ -653,7 +662,10 @@ yieldEachStatement:
     `yield`* expression `;`
 
 assertStatement:
-    assert `(` expression ( `,` expression )? `,`? `)` `;`
+    assertion `;`
+
+assertion:
+    `assert` `(` expression (`,` expression )? `,`? `)`
 
 topLevelDefinition:
     classDefinition
@@ -682,7 +694,7 @@ libraryName:
     metadata `library` identifier (`.` identifier)* `;`
 
 importOrExport:
-    libraryImport 
+    libraryImport
     libraryExport
 
 libraryImport:
@@ -747,6 +759,8 @@ DIGIT:
 
 WHITESPACE:
     (`\t` | ` ` | NEWLINE)+
+
+SINGLE_LINE_COMMENT:
     `//` ~(NEWLINE)* (NEWLINE)?
 
 MULTI_LINE_COMMENT:
