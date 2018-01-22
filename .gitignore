@@ -8,3 +8,6 @@
 *-list.txt
 DLS/current/*.pdf
 grammar/*.pdf
+pubspec.lock
+.packages
+.pub
