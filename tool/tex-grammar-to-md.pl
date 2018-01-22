@@ -18,8 +18,8 @@ s/%.*\n/\n/g;
 s/PCT/\\%/g;
 
 # Change some Latex macros, etc:
-s/\\lt\b/</g;
-s/\\gt\b/>/g;
+s/\\lt(\s+|\b)/</g;
+s/\\gt(\s+|\b)/>/g;
 s/\\([&#])/$1/g;
 s/\\([{}])/$1/g;
 s/\\([~^]){}/$1/g;
@@ -53,6 +53,12 @@ s/\{\\escapegrammar\s*([^}]+)}/$1/g;
 s/`([^']+)'/`$1`/g;
 s/SQT/'/g;
 
+# \gcomma{} -> `,`
+s/\\gcomma{}/`,`/g;
+
+# \gnewline{} -> a single space
+s/\s*?\n\s+\\gnewline{}\s*/ /g;
+
 # \FOO{} -> __foo__
 s/\\([A-Z]+){}/__\L$1__/g;
 # \FOO* -> __foo__*
@@ -65,7 +71,7 @@ s/\$(\|+)\$/$1/g;
 s/\$\\backslash\$\s*/\\/g;
 
 my $hdPrefix = '##### ';
-    
+
 # Output grammar production head as a header
 s/ *{\\bf\s*(\w+)\s*:\s*}/$hdPrefix$1:\n    /g;
 
