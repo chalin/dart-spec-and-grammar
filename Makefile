@@ -34,10 +34,11 @@ gethasher:
 1.6:;	$(MAKE) VERS=1.6 DATE=2014-08-27 $(TARGET)
 1.9:;	$(MAKE) VERS=1.9 DATE=2015-03-26 $(TARGET)
 1.11:;$(MAKE) VERS=1.11 DATE=2015-08-19 $(TARGET)
+1.15:;$(MAKE) VERS=1.15 DATE=2017-06-23 $(TARGET)
 
 # (Re)make all old versions
 
-all: 1.0 1.3 1.6 1.9 1.11
+all: 1.0 1.3 1.6 1.9 1.11 1.15
 
 # http://news.dartlang.org/2013/11/dart-10-stable-sdk-for-structured-web.html
 # http://news.dartlang.org/2014/04/dart-13-dramatically-improves-server.html
