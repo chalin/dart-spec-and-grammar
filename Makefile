@@ -2,7 +2,7 @@ include Makefile.include
 SDKGIT?=../sdk
 TARGET?=grammar pdf
 
-.PHONY:	default grammar mk cp pdf get clean
+.PHONY:	default grammar mk cp pdf get clean watermark
 
 default: grammar pdf
 
@@ -18,9 +18,16 @@ pdf:;	$(MAKE) -C $(DLS) pdfhash
 
 get:;	$(MAKE) -C DLS/current clean
 	tool/get-spec.sh
+	$(MAKE) watermark
+
+watermark:
+	perl -pi -e \
+	 's/^\\documentclass.*$$/$$&\n\\usepackage{draftwatermark}\n\\SetWatermarkText{DRAFT}\n\\SetWatermarkLightness{0.9}/m' \
+	 DLS/current/dartLangSpec.tex
 
 clean:;	$(MAKE) -C grammar clean
 	$(MAKE) -C $(DLS) clean
+	rm DLS/current/*-hash.*
 
 gethasher:
 	cd tool; \
