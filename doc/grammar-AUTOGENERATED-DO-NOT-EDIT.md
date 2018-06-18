@@ -1,5 +1,5 @@
 # Dart Programming Language Grammar
-### Version GIT-HEAD, 2018-01-21
+### Version GIT-HEAD, 2018-06-18
 
 <a name="variableDeclaration"></a>
 **variableDeclaration**: <br/>
@@ -231,7 +231,11 @@
 
 <a name="enumType"></a>
 **enumType**: <br/>
-&emsp;&emsp;[metadata](#metadata) __enum__ [id](#id) `{` [id](#id) [`,` [id](#id)]* [`,`] `}` <br/>
+&emsp;&emsp;[metadata](#metadata) __enum__ [identifier](#identifier) `{` [enumEntry](#enumEntry) (`,` [enumEntry](#enumEntry))* (`,`)? `}` <br/>
+
+<a name="enumEntry"></a>
+**enumEntry**: <br/>
+&emsp;&emsp;[metadata](#metadata) [identifier](#identifier) <br/>
 
 <a name="typeParameter"></a>
 **typeParameter**: <br/>
@@ -649,11 +653,14 @@
 &emsp;&emsp;__export__ <br/>
 &emsp;&emsp;__external__ <br/>
 &emsp;&emsp;__factory__ <br/>
+&emsp;&emsp;__function__ <br/>
 &emsp;&emsp;__get__ <br/>
 &emsp;&emsp;__implements__ <br/>
 &emsp;&emsp;__import__ <br/>
+&emsp;&emsp;__interface__ <br/>
 &emsp;&emsp;__library__ <br/>
 &emsp;&emsp;__operator__ <br/>
+&emsp;&emsp;__mixin__ <br/>
 &emsp;&emsp;__part__ <br/>
 &emsp;&emsp;__set__ <br/>
 &emsp;&emsp;__static__ <br/>
@@ -860,12 +867,16 @@
 
 <a name="libraryName"></a>
 **libraryName**: <br/>
-&emsp;&emsp;[metadata](#metadata) __library__ [identifier](#identifier) (`.` [identifier](#identifier))* `;` <br/>
+&emsp;&emsp;[metadata](#metadata) __library__ [dottedIdentifierList](#dottedIdentifierList) `;` <br/>
 
 <a name="importOrExport"></a>
 **importOrExport**: <br/>
 &emsp;&emsp;[libraryImport](#libraryImport) <br/>
 &emsp;&emsp;[libraryExport](#libraryExport) <br/>
+
+<a name="dottedIdentifierList"></a>
+**dottedIdentifierList**: <br/>
+&emsp;&emsp;[identifier](#identifier) (`.` [identifier](#identifier))* <br/>
 
 <a name="libraryImport"></a>
 **libraryImport**: <br/>
@@ -873,7 +884,7 @@
 
 <a name="importSpecification"></a>
 **importSpecification**: <br/>
-&emsp;&emsp;__import__ [uri](#uri) (__as__ [identifier](#identifier))? [combinator](#combinator)* `;` <br/>
+&emsp;&emsp;__import__ [configurableUri](#configurableUri) (__as__ [identifier](#identifier))? [combinator](#combinator)* `;` <br/>
 &emsp;&emsp;__import__ [uri](#uri) __deferred__ __as__ [identifier](#identifier) [combinator](#combinator)* `;` <br/>
 
 <a name="combinator"></a>
@@ -887,7 +898,7 @@
 
 <a name="libraryExport"></a>
 **libraryExport**: <br/>
-&emsp;&emsp;[metadata](#metadata) __export__ [uri](#uri) [combinator](#combinator)* `;` <br/>
+&emsp;&emsp;[metadata](#metadata) __export__ [configurableUri](#configurableUri) [combinator](#combinator)* `;` <br/>
 
 <a name="partDirective"></a>
 **partDirective**: <br/>
@@ -904,6 +915,18 @@
 <a name="uri"></a>
 **uri**: <br/>
 &emsp;&emsp;[stringLiteral](#stringLiteral) <br/>
+
+<a name="configurableUri"></a>
+**configurableUri**: <br/>
+&emsp;&emsp;[uri](#uri) [configurationUri](#configurationUri)* <br/>
+
+<a name="configurationUri"></a>
+**configurationUri**: <br/>
+&emsp;&emsp;__if__ `(` [uriTest](#uriTest) `)` [uri](#uri) <br/>
+
+<a name="uriTest"></a>
+**uriTest**: <br/>
+&emsp;&emsp;[dottedIdentifierList](#dottedIdentifierList) (`==` [stringLiteral](#stringLiteral))? <br/>
 
 <a name="type"></a>
 **type**: <br/>
