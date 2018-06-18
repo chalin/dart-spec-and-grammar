@@ -1,5 +1,5 @@
 Dart Programming Language Grammar
-Version GIT-HEAD, 2018-01-21
+Version GIT-HEAD, 2018-06-18
 
 variableDeclaration:
     declaredIdentifier (`,` identifier)*
@@ -183,7 +183,10 @@ mixinApplication:
     type mixins interfaces?
 
 enumType:
-    metadata `enum` id `{` id [`,` id]* [`,`] `}`
+    metadata `enum` identifier `{` enumEntry (`,` enumEntry)* (`,`)? `}`
+
+enumEntry:
+    metadata identifier
 
 typeParameter:
     metadata identifier (`extends` type)?
@@ -522,11 +525,14 @@ BUILT_IN_IDENTIFIER:
     `export`
     `external`
     `factory`
+    `function`
     `get`
     `implements`
     `import`
+    `interface`
     `library`
     `operator`
+    `mixin`
     `part`
     `set`
     `static`
@@ -691,17 +697,20 @@ scriptTag:
     `#!` (~NEWLINE)* NEWLINE
 
 libraryName:
-    metadata `library` identifier (`.` identifier)* `;`
+    metadata `library` dottedIdentifierList `;`
 
 importOrExport:
     libraryImport
     libraryExport
 
+dottedIdentifierList:
+    identifier (`.` identifier)*
+
 libraryImport:
     metadata importSpecification
 
 importSpecification:
-    `import` uri (`as` identifier)? combinator* `;`
+    `import` configurableUri (`as` identifier)? combinator* `;`
     `import` uri `deferred` `as` identifier combinator* `;`
 
 combinator:
@@ -712,7 +721,7 @@ identifierList:
     identifier (, identifier)*
 
 libraryExport:
-    metadata `export` uri combinator* `;`
+    metadata `export` configurableUri combinator* `;`
 
 partDirective:
     metadata `part` uri `;`
@@ -725,6 +734,15 @@ partDeclaration:
 
 uri:
     stringLiteral
+
+configurableUri:
+    uri configurationUri*
+
+configurationUri:
+    `if` `(` uriTest `)` uri
+
+uriTest:
+    dottedIdentifierList (`==` stringLiteral)?
 
 type:
     typeName typeArguments?
