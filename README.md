@@ -3,7 +3,8 @@
 Using TeX sources taken from @[dart-lang/sdk/docs/language][], this project
 makes available the generated versions of the following [documents](doc):
 
-- **[Dart Language Specification](doc/dartLangSpec.pdf)** PDF
+- **Dart Language Specification** PDF
+  - Deprecated; this is now provided by the Dart Team at https://www.dartlang.org/guides/language/spec#in-progress-specification
 - **Dart language grammar**, automatically extracted from the specification.
 
 The **grammar** is available in
